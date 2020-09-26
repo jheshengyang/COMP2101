@@ -19,8 +19,11 @@ echo "Setuid files:"
 echo "============="
 find / -type f -executable -perm -4000 -ls 2>/dev/null | sort -k 5
 echo ""
-exit
-
+echo "The 12 biggest files in the system:"
+echo "==================================="
+echo " Owen   Size   File Name"
+find / -type f -exec ls -lh {} + 2>/dev/null | sort -k 5 -h -r | head -n 12 | awk '{print $3,$5,$9}'
+echo ""
 # for the task, add
 # commands to display a title
 # commands to make a list of the 12 biggest files
