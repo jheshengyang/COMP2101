@@ -14,8 +14,6 @@ read -p "Third numbet: " thirdnum
 sum=$((firstnum + secondnum + thirdnum))
 productoof3=$((firstnum * secondnum * thirdnum))
 
-#dividend=$((firstnum / secondnum))
-#fpdividend=$(awk "BEGIN{printf \"%.2f\", $firstnum/$secondnum}")
 
 cat <<EOF
 the sum of the 3 numbers is $sum
