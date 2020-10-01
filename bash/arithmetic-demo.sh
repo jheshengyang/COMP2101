@@ -7,12 +7,10 @@
 #    the sum of the 3 numbers with a label
 #    the product of the 3 numbers with a label
 
-echo "Please enter three numbers: \n First number:"
-read firstnum
-echo "Second number:"
-read secondnum
-echo "Thirdnumber number:"
-read thirdnum
+echo "Please enter three numbers"
+read -p "First numbet: " firstnum
+read -p "Second numbet: " secondnum
+read -p "Third numbet: " thirdnum
 sum=$((firstnum + secondnum + thirdnum))
 productoof3=$((firstnum * secondnum * thirdnum))
 
