@@ -22,23 +22,31 @@ hostname=$(hostname)
 today=$(date +%A)
 #time=$(date +%r)
 time=$(date +"%I:%M %p")
-if [ "$today" == "Monday" ]; then
-  title=Blue
-elif [ "$today" == "Tuesday" ]; then
-  title=Sleepy
-elif [ "$today" == "Wednesday" ]; then
-  title=Sad
-elif [ "$today" == "Thursday" ]; then
-  title=Exhausted
-elif [ "$today" == "Friday" ]; then
-  title=Happy
-elif [ "$today" == "Saturday" ]; then
-  title=Crazy
-elif [ "$today" == "Sunday" ]; then
-  title=Funny
-else
-  title=SomethingWrong
-fi
+
+test $today == "Monday" && title=Blue
+test $today == "Tuesday" && title=Sleepy
+test $today == "Wednesday" && title=Sad
+test $today == "Thursday" && title=Exhausted
+test $today == "Friday" && title=Happy
+test $today == "Saturday" && title=Crazy
+test $today == "Sunday" && title=Funny
+#if [ "$today" == "Monday" ]; then
+#  title=Blue
+#elif [ "$today" == "Tuesday" ]; then
+#  title=Sleepy
+#elif [ "$today" == "Wednesday" ]; then
+#  title=Sad
+#elif [ "$today" == "Thursday" ]; then
+#  title=Exhausted
+#elif [ "$today" == "Friday" ]; then
+#  title=Happy
+#elif [ "$today" == "Saturday" ]; then
+#  title=Crazy
+#elif [ "$today" == "Sunday" ]; then
+#  title=Funny
+#else
+#  title=SomethingWrong
+#fi
 ###############
 # Main        #
 ###############
