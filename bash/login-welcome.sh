@@ -36,4 +36,4 @@ test $today == "Sunday" && title=Funny
 
 output="It is $today at $time.\
   Welcome to planet $hostname, \"$title $myname!\""
-cowsay $output
+cowsay "$output"
