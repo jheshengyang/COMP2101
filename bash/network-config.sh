@@ -87,7 +87,7 @@ RouterAddress=$(ip r | grep default | awk '{print $3}')
 RouterName=$(getent hosts $RouterAddress | awk '{print $2}')
 
 # Network info
-NetworkIP=$(route -n | grep $LANInterface | grep -v '^0' | grep -v '^169.254' | awk '{print $1}')
+NetworkIP=$(ip r | grep $LANInterface | grep -v '^0' | grep -v '^169.254' | grep -v 255.255.255.255 | awk '{print $1}')
 NetworkName=$(getent networks $NetworkIP | awk '{print $1}')
 
 cat <<EOF
