@@ -87,9 +87,9 @@ EOF
 
 # define the interface being summarized
 
-# Find all interfaces or use an interface that user enterd
+# Find all interfaces
 interfacesTemp=$(ip a |awk '/: e/{gsub(/:/,"");print $2}')
-# or
+# or use an interface that user entered , if that exists. Otherwise exit the script
 if [ "$chosenInterface" != "" ]; then
   echo "$interfacesTemp" | grep -q "$chosenInterface" || echo "$chosenInterface doesn't exist"
   echo "$interfacesTemp" | grep -q "$chosenInterface" || exit
@@ -103,12 +103,12 @@ for interface in $interfacesTemp; do
   [ "$verbose" = "yes" ] && echo "Getting IPV4 address and name for interface $interface"
   # Find an address and hostname for the interface being summarized
   # we are assuming there is only one IPV4 address assigned to this interface
-  ipv4_address=$(ip a s $interface|awk -F '[/ ]+' '/inet /{print $3}')
+  ipv4_address=$(ip a s "$interface"|awk -F '[/ ]+' '/inet /{print $3}')
   ipv4_hostname=$(getent hosts $ipv4_address | awk '{print $2}')
 
   [ "$verbose" = "yes" ] && echo "Getting IPV4 network block info and name for interface $interface"
   # Identify the network number for this interface and its name if it has one
-  network_address=$(ip route list dev $interface scope link|cut -d ' ' -f 1)
+  network_address=$(ip route list dev $interface scope link|cut -d ' ' -f 1|grep /)
   network_number=$(cut -d / -f 1 <<<"$network_address")
   network_name=$(getent networks $network_number|awk '{print $1}')
 
@@ -118,7 +118,7 @@ Interface $interface:
 ===============
 Address         : $ipv4_address
 Name            : $ipv4_hostname
-Network Address : $network_address
+Network Address : $network_number
 Network Name    : $network_name
 
 EOF
