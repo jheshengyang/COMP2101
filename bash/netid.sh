@@ -87,8 +87,8 @@ EOF
 
 # define the interface being summarized
 
-# Find all interfaces
-interfacesTemp=$(ip a |awk '/: e/{gsub(/:/,"");print $2}')
+# Find all interfaces and for en-vlxx@ensxx format, get rid of @ and following
+interfacesTemp=$(ip a |awk '/: e/{gsub(/:/,"");print $2}') | sed -e s/@ens34//g
 # or use an interface that user entered , if that exists. Otherwise exit the script
 if [ "$chosenInterface" != "" ]; then
   echo "$interfacesTemp" | grep -q "$chosenInterface" || echo "$chosenInterface doesn't exist"
@@ -100,7 +100,7 @@ fi
 for interface in $interfacesTemp; do
 
   # for en-vlxx@ensxx format, get rid of @ and following
-  interface=$(cut -d @ -f 1 <<<"$interface")
+  # interface=$(cut -d @ -f 1 <<<"$interface")
 
   [ "$verbose" = "yes" ] && echo "Reporting on interface(s): $interface"
   [ "$verbose" = "yes" ] && echo "Getting IPV4 address and name for interface $interface"
