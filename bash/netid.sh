@@ -91,8 +91,8 @@ EOF
 interfacesTemp=$(ip a |awk '/: e/{gsub(/:/,"");print $2}' | sed -e s/@ens34//g)
 # or use an interface that user entered , if that exists. Otherwise exit the script
 if [ "$chosenInterface" != "" ]; then
-  echo "$interfacesTemp" | grep -q "$chosenInterface" || echo "$chosenInterface doesn't exist"
-  echo "$interfacesTemp" | grep -q "$chosenInterface" || exit
+  grep -q "$chosenInterface" <<<"$interfacesTemp" || echo "$chosenInterface doesn't exist"
+  grep -q "$chosenInterface" <<<"$interfacesTemp" || exit
   interfacesTemp=$chosenInterface
 fi
 
