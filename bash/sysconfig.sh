@@ -53,6 +53,7 @@ OPTION:
   --printer
         only display this machine's printer information
 
+NO OTHER OPTIONS ARE RECOGNIZED
 EOF
 }
 
