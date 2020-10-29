@@ -23,7 +23,7 @@ function error-message {
 #   error-exit ["some text to print to stderr" [exit-status]]
 function error-exit {
   error-message "$*"
-  exit
+  exit 1
 }
 #This function displays help information if the user asks for it on the command line or gives us a bad command line
 function displayhelp {
@@ -89,7 +89,7 @@ while [ $# -gt 0 ]; do
   case "$1" in
     -h|--help)
       displayhelp
-      exit
+      exit 0
       ;;
     --host)
       hostnamewanted=true
