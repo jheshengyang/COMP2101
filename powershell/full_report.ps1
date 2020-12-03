@@ -56,13 +56,14 @@ function disk_info {
                 new-object -typename psobject -property @{ Drive=$logicaldisk.deviceid; 
                                                            Vendor=$disk.Manufacturer; 
                                                            Model=$disk.model; 
-                                                           “Size(GB)”="{0:N2}" -f ($logicaldisk.size / 1gb); 
-                                                           "Space Usage(GB)"= "{0:N2}" -f (($logicaldisk.size - $logicaldisk.freespace) / 1gb)
+                                                           “Size(GB)”="{0:N2}" -f ($partition.size / 1gb); 
+                                                           "Free Space(GB)"= "{0:N2}" -f (($logicaldisk.freespace) / 1gb)
+                                                           "Space Uasge(%)" = "{0:N2}" -f (($logicaldisk.size-$logicaldisk.freespace) * 100 / $logicaldisk.size)
                                                           } 
             } 
         }
     } 
-$diskinfo
+    $diskinfo
 }
 function video_card {
     gwmi win32_videocontroller | select @{ n = "Vendor"; e={$_.AdapterCompatibility}},
@@ -79,30 +80,43 @@ function video_card {
 #---------------------------------------------main code----------------------------------------------------------
 "Your System Information Report
 
-1. System hardware description:"
+1. System hardware description:
+==================================="
 (system_hardware_info | fl | out-string).trim()
-"`n`n"
 
-"2. Operating system:"
+"
+
+2. Operating system:
+==================================="
 (operating_system_info | fl | out-string).trim()
-"`n`n"
 
-"3. Processor:"
+"
+
+3. Processor:
+==================================="
 (CPU_info | fl | out-string).trim()
-"`n`n"
 
-"4. Memory:"
+"
+
+4. Memory:
+==================================="
 (memory_info | ft -AutoSize | out-string).trim()
-"`n`n"
 
-"5. Disk:"
-(disk_info | ft -AutoSize | out-string).trim()
-"`n`n"
+"
 
-"6. Network Adapter:"
+5. Disk:
+==================================="
+(disk_info | ft -AutoSize Drive,Vendor,Model,“Size(GB)”,"Free Space(GB)","Space Uasge(%)" | out-string).trim()
+
+"
+
+6. Network Adapter:
+==================================="
 (ip_configuration_report.ps1 | ft -AutoSize | out-string).trim()
-"`n`n"
 
-"7. Video Card:"
+"
+
+7. Video Card:
+==================================="
 (video_card | fl | out-string).trim()
 "`n"                                                                            
