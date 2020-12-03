@@ -1,6 +1,6 @@
 ﻿#---------------------------------------------functions----------------------------------------------------------
 function system_hardware_info {
-    gwmi win32_computersystem | select @{ n="Hardware Description"; e={$_.name} } 
+    gwmi win32_computersystem | select Name,Manufacturer,Model
 }
 function operating_system_info {
     gwmi win32_operatingsystem | select Caption,Version
@@ -30,11 +30,21 @@ function CPU_info {
                                   }
 }
 function memory_info {
-    gwmi win32_physicalmemory | select @{ n = "Vendor"; e = {$_.Manufacturer}},
-                                       Description,
-                                       @{ n = "Size(GB)"; e = {$_.Capacity / 1GB -as [int]}},
-                                       BankLabel,
-                                       DeviceLocator
+    $RAMs = 0
+    gwmi win32_physicalmemory | foreach{
+        new-object -typename psobject -property @{  Vendor = $_.Manufacturer;
+                                                    "Speed(MHz)" =  if($_.Speed -ne $null) {
+                                                                        $_.Speed
+                                                                    } else {
+                                                                        "data unavailable"
+                                                                    };
+                                                    "Size(GB)" = $_.Capacity / 1GB -as [int];
+                                                    Bank = $_.BankLabel;
+                                                    Slot = $_.DeviceLocator                                                    
+                                                }
+        $RAMs += ($_.Capacity / 1GB -as [int])
+    }
+    "Total RAM: " + $RAMs.toString() + " GB"
 }
 function disk_info {
     $diskdrives = Get-CIMInstance CIM_diskdrive
@@ -70,23 +80,29 @@ function video_card {
 "Your System Information Report
 
 1. System hardware description:"
-system_hardware_info | fl
+(system_hardware_info | fl | out-string).trim()
+"`n`n"
 
-"2. Operating System:"
-operating_system_info | fl
+"2. Operating system:"
+(operating_system_info | fl | out-string).trim()
+"`n`n"
 
 "3. Processor:"
-CPU_info | fl
+(CPU_info | fl | out-string).trim()
+"`n`n"
 
 "4. Memory:"
-memory_info | ft -AutoSize
+(memory_info | ft -AutoSize | out-string).trim()
+"`n`n"
 
 "5. Disk:"
-disk_info | ft -AutoSize
+(disk_info | ft -AutoSize | out-string).trim()
+"`n`n"
 
 "6. Network Adapter:"
-ip_configuration_report.ps1 | ft -AutoSize
+(ip_configuration_report.ps1 | ft -AutoSize | out-string).trim()
+"`n`n"
 
 "7. Video Card:"
-video_card | fl
-                                                                            
+(video_card | fl | out-string).trim()
+"`n"                                                                            
