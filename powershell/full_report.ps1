@@ -56,10 +56,10 @@ function disk_info {
                 new-object -typename psobject -property @{ Drive=$logicaldisk.deviceid; 
                                                            Vendor=$disk.Manufacturer; 
                                                            Model=$disk.model; 
-                                                           “Size(GB)”="{0:N2}" -f ($partition.size / 1gb); 
+                                                           “Size(GB)”="{0:N2}" -f ($logicaldisk.size / 1gb); 
                                                            "Free Space(GB)"= "{0:N2}" -f (($logicaldisk.freespace) / 1gb)
                                                            "Space Uasge(%)" = "{0:N2}" -f (($logicaldisk.size-$logicaldisk.freespace) * 100 / $logicaldisk.size)
-                                                          } 
+                                                         } 
             } 
         }
     } 
