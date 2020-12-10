@@ -7,8 +7,10 @@ param ( [switch]$System,
         [switch]$Network
 )
 
+
+
 if ($System -eq $false -and $Disks -eq $false -and $Network -eq $false) {
-    "No Report Produces."
+    full_report.ps1
 } else {
     "`nYour System Information Report"
     if ($System) {
