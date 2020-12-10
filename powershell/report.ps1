@@ -1,11 +1,12 @@
 ﻿#-System displays the cpu, OS, RAM, Video reports ony
 #-Disks displays the disks report only
 #-Network displays the network report only
-param ( [bool]$System = $false, 
-        [bool]$Disks = $false,
-        [bool]$Network = $false 
+#$args
+param ( [switch]$System, 
+        [switch]$Disks,
+        [switch]$Network
 )
-$args
+
 if ($System -eq $false -and $Disks -eq $false -and $Network -eq $false) {
     "No Report Produces."
 } else {
